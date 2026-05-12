@@ -14,13 +14,13 @@ mod tests {
                 let chart = chart_builder();
                 let json_string = serde_json::to_string(&chart).unwrap_or_else(|e| {
                     panic!(
-                        "Shold be able to serialize sub chart: {sub_key} in {key} charts category, error message: {e}"
+                        "Should be able to serialize sub chart: {sub_key} in {key} charts category, error message: {e}"
                     )
                 });
 
                 let deserialized_chart:Chart = serde_json::from_str(&json_string).unwrap_or_else(|e| {
                     panic!(
-                        "Shold be able to deserialize sub chart: {sub_key} in {key} charts category, error message: {e}"
+                        "Should be able to deserialize sub chart: {sub_key} in {key} charts category, error message: {e}"
                     )
                 });
 
