@@ -91,6 +91,7 @@ pub mod renderer;
 pub mod series;
 pub mod theme;
 
+#[cfg(any(feature = "html", feature = "ssr", feature = "wasm"))]
 pub use renderer::*;
 
 use charming_macros::CharmingSetters;
