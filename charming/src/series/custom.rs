@@ -6,7 +6,28 @@ use crate::{
     },
 };
 use charming_macros::CharmingSetters;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
+
+/// TODO remove this since the json that requires this is actaully incorrect. But needs an upstream
+/// fix
+fn deserialize_opt_clip<'de, D>(deserializer: D) -> Result<Option<bool>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum ClipRaw {
+        Bool(bool),
+        Str(String),
+    }
+    match Option::<ClipRaw>::deserialize(deserializer)? {
+        None => Ok(None),
+        Some(ClipRaw::Bool(b)) => Ok(Some(b)),
+        Some(ClipRaw::Str(s)) => Ok(Some(
+            matches!(s.as_str(), "true" | "True" | "1") || s.eq_ignore_ascii_case("yes"),
+        )),
+    }
+}
 
 #[serde_with::apply(
   Option => #[serde(skip_serializing_if = "Option::is_none")],
@@ -36,7 +57,7 @@ pub struct Custom {
     zlevel: Option<f64>,
     silent: Option<bool>,
     #[serde_with(skip)]
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_opt_clip")]
     clip: Option<bool>,
     #[charming_set_vec]
     dimensions: Vec<Dimension>,
