@@ -72,12 +72,23 @@ where
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, PartialOrd, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(untagged)]
 #[allow(clippy::large_enum_variant)]
 pub enum DataPoint {
     Value(CompositeValue),
     Item(DataPointItem),
+    Json(serde_json::Value),
+}
+
+impl PartialOrd for DataPoint {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        match (self, other) {
+            (DataPoint::Value(v1), DataPoint::Value(v2)) => v1.partial_cmp(v2),
+            (DataPoint::Item(i1), DataPoint::Item(i2)) => i1.partial_cmp(i2),
+            _ => None,
+        }
+    }
 }
 
 impl<V> From<V> for DataPoint

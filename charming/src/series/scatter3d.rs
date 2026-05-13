@@ -1,6 +1,6 @@
 use crate::{
-    datatype::{CompositeValue, DataFrame, DataPoint},
-    element::{CoordinateSystem, DimensionEncode, ItemStyle, Label},
+    datatype::{DataFrame, DataPoint},
+    element::{DimensionEncode, Label, Symbol, SymbolSize},
 };
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Serialize};
@@ -11,19 +11,17 @@ use serde::{Deserialize, Serialize};
 )]
 #[derive(Serialize, Deserialize, CharmingSetters, Debug, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct Bar3d {
+pub struct Scatter3d {
     #[serde(rename = "type")]
-    #[charming_type = "bar3D"]
+    #[charming_type = "scatter3D"]
     type_: String,
+    id: Option<String>,
     name: Option<String>,
-    coordinate_system: Option<CoordinateSystem>,
-    grid3d_index: Option<CompositeValue>,
-    geo3d_index: Option<CompositeValue>,
-    globe_index: Option<CompositeValue>,
-    shading: Option<String>,
-    label: Option<Label>,
-    item_style: Option<ItemStyle>,
+    grid3d_index: Option<f64>,
     encode: Option<DimensionEncode>,
+    label: Option<Label>,
+    symbol: Option<Symbol>,
+    symbol_size: Option<SymbolSize>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
     data: DataFrame,
 }

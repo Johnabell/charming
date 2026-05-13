@@ -11,6 +11,7 @@ pub enum SankeyNodeAlign {
     Left,
     Right,
     Justify,
+    Center,
 }
 
 #[serde_with::apply(

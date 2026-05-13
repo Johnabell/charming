@@ -4,8 +4,10 @@ use super::{
     font_settings::{FontFamily, FontStyle, FontWeight},
     line_style::LineStyle,
 };
+use crate::datatype::CompositeValue;
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, PartialOrd, Clone, Copy)]
 #[serde(rename_all = "camelCase")]
@@ -78,9 +80,11 @@ pub struct Label {
     background_color: Option<Color>,
     border_color: Option<Color>,
     border_width: Option<f64>,
+    border_radius: Option<CompositeValue>,
     shadow_blur: Option<f64>,
     shadow_offset_x: Option<f64>,
     shadow_offset_y: Option<f64>,
+    rich: Option<Value>,
 }
 
 impl Label {

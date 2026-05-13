@@ -33,6 +33,11 @@ pub struct Custom {
     label_line: Option<LabelLine>,
     label_layout: Option<LabelLayout>,
     selected_mode: Option<bool>,
+    zlevel: Option<f64>,
+    silent: Option<bool>,
+    #[serde_with(skip)]
+    #[serde(default)]
+    clip: Option<bool>,
     #[charming_set_vec]
     dimensions: Vec<Dimension>,
     encode: Option<DimensionEncode>,

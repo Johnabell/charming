@@ -2,7 +2,7 @@ use crate::{
     datatype::{DataFrame, DataPoint},
     element::{
         ColorBy, CoordinateSystem, DimensionEncode, Emphasis, ItemStyle, Label, MarkArea, MarkLine,
-        Symbol, SymbolSize,
+        Symbol, SymbolSize, Tooltip,
     },
 };
 use charming_macros::CharmingSetters;
@@ -20,6 +20,7 @@ pub struct Scatter {
     type_: String,
     id: Option<String>,
     name: Option<String>,
+    color: Option<String>,
     color_by: Option<ColorBy>,
     label: Option<Label>,
     dataset_index: Option<f64>,
@@ -28,11 +29,16 @@ pub struct Scatter {
     y_axis_index: Option<f64>,
     symbol: Option<Symbol>,
     symbol_size: Option<SymbolSize>,
+    show_symbol: Option<bool>,
+    large: Option<bool>,
+    progressive: Option<f64>,
+    zlevel: Option<f64>,
     encode: Option<DimensionEncode>,
     mark_line: Option<MarkLine>,
     mark_area: Option<MarkArea>,
     item_style: Option<ItemStyle>,
     emphasis: Option<Emphasis>,
+    tooltip: Option<Tooltip>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
     data: DataFrame,
 }

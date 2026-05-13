@@ -28,6 +28,7 @@ pub enum Trigger {
 #[derive(Serialize, Deserialize, CharmingSetters, Debug, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Tooltip {
+    show: Option<bool>,
     trigger: Option<Trigger>,
     trigger_on: Option<TriggerOn>,
     axis_pointer: Option<AxisPointer>,

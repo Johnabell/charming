@@ -1,6 +1,7 @@
 use super::color::Color;
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Deserializer, Serialize, de::Visitor, ser::SerializeSeq};
+use serde_with::{OneOrMany, formats::PreferMany, serde_as};
 
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct ColorSegment(f64, Color);
@@ -40,9 +41,23 @@ impl<'de> Deserialize<'de> for ColorSegment {
                     .ok_or_else(|| serde::de::Error::invalid_length(1, &self))?;
                 Ok(ColorSegment(position, color))
             }
+
+            fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+            where
+                E: serde::de::Error,
+            {
+                Ok(ColorSegment(0.0, Color::Value(v.to_owned())))
+            }
+
+            fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+            where
+                E: serde::de::Error,
+            {
+                Ok(ColorSegment(0.0, Color::Value(v)))
+            }
         }
 
-        deserializer.deserialize_seq(ColorSegmentVisitor)
+        deserializer.deserialize_any(ColorSegmentVisitor)
     }
 }
 
@@ -58,6 +73,7 @@ impl From<(f64, Color)> for ColorSegment {
     }
 }
 
+#[serde_as]
 #[serde_with::apply(
   Option => #[serde(skip_serializing_if = "Option::is_none")],
   Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -65,6 +81,7 @@ impl From<(f64, Color)> for ColorSegment {
 #[derive(Serialize, Deserialize, CharmingSetters, Debug, PartialEq, PartialOrd, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLineStyle {
+    #[serde_as(as = "OneOrMany<_, PreferMany>")]
     color: Vec<ColorSegment>,
     width: Option<f64>,
     shadow_blur: Option<f64>,

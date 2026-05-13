@@ -21,7 +21,9 @@ pub mod pie;
 pub mod radar;
 pub mod sankey;
 pub mod scatter;
+pub mod scatter3d;
 pub mod sunburst;
+pub mod surface;
 pub mod theme_river;
 pub mod tree;
 pub mod treemap;
@@ -45,7 +47,9 @@ pub use pie::*;
 pub use radar::*;
 pub use sankey::*;
 pub use scatter::*;
+pub use scatter3d::*;
 pub use sunburst::*;
+pub use surface::*;
 pub use theme_river::*;
 pub use tree::*;
 pub use treemap::*;
@@ -70,7 +74,9 @@ pub enum Series {
     Radar(radar::Radar),
     Sankey(sankey::Sankey),
     Scatter(scatter::Scatter),
+    Scatter3d(scatter3d::Scatter3d),
     Sunburst(sunburst::Sunburst),
+    Surface(surface::Surface),
     ThemeRiver(theme_river::ThemeRiver),
     Tree(tree::Tree),
     Treemap(treemap::Treemap),
@@ -125,7 +131,9 @@ impl_series_deserialize!(
     Radar => "radar",
     Sankey => "sankey",
     Scatter => "scatter",
+    Scatter3d => "scatter3D",
     Sunburst => "sunburst",
+    Surface => "surface",
     ThemeRiver => "themeRiver",
     Tree => "tree",
     Treemap => "treemap",
@@ -172,7 +180,9 @@ impl_series!(
     Radar,
     Sankey,
     Scatter,
+    Scatter3d,
     Sunburst,
+    Surface,
     ThemeRiver,
     Tree,
     Treemap

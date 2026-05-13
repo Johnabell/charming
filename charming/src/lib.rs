@@ -101,8 +101,11 @@ use component::{
     SaveAsImageType, SingleAxis, Title, Toolbox, VisualMap,
 };
 use datatype::Dataset;
-use element::{AnimationTime, AxisPointer, Color, Easing, MarkLine, Tooltip, process_raw_strings};
+use element::{
+    AnimationTime, AxisPointer, Color, Easing, MarkLine, TextStyle, Tooltip, process_raw_strings,
+};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use serde_with::{OneOrMany, formats::PreferOne, serde_as};
 use series::Series;
 /**
@@ -258,27 +261,33 @@ pub struct Chart {
     animation_easing_update: Option<Easing>,
     animation_delay_update: Option<AnimationTime>,
     tooltip: Option<Tooltip>,
+    text_style: Option<TextStyle>,
     legend: Option<LegendConfig>,
     toolbox: Option<Toolbox>,
     #[serde_as(as = "OneOrMany<_, PreferOne>")]
     grid: Vec<Grid>,
     #[serde(rename = "grid3D")]
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     grid3d: Vec<Grid3D>,
     #[serde_as(as = "OneOrMany<_, PreferOne>")]
     x_axis: Vec<Axis>,
     #[serde(rename = "xAxis3D")]
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     x_axis3d: Vec<Axis3D>,
     #[serde_as(as = "OneOrMany<_, PreferOne>")]
     y_axis: Vec<Axis>,
     #[serde(rename = "yAxis3D")]
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     y_axis3d: Vec<Axis3D>,
     #[serde(rename = "zAxis3D")]
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     z_axis3d: Vec<Axis3D>,
     polar: Vec<PolarCoordinate>,
     angle_axis: Vec<AngleAxis>,
     radius_axis: Vec<RadiusAxis>,
     single_axis: Option<SingleAxis>,
     parallel_axis: Vec<ParallelAxis>,
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     axis_pointer: Vec<AxisPointer>,
     visual_map: Vec<VisualMap>,
     data_zoom: Vec<DataZoom>,
@@ -292,6 +301,7 @@ pub struct Chart {
     mark_line: Option<MarkLine>,
     aria: Option<Aria>,
     series: Vec<Series>,
+    graphic: Vec<Value>,
     #[serde(skip_serializing)]
     geo_map: Vec<GeoMap>,
 }

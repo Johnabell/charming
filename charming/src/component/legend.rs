@@ -5,9 +5,29 @@ use crate::{
     },
 };
 use charming_macros::CharmingSetters;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use serde_with::{DisplayFromStr, PickFirst, serde_as};
 use std::{collections::BTreeMap, str::FromStr};
+
+fn deserialize_legend_selected_mode<'de, D>(
+    deserializer: D,
+) -> Result<Option<LegendSelectedMode>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum Raw {
+        Bool(bool),
+        Mode(LegendSelectedMode),
+    }
+    match Option::<Raw>::deserialize(deserializer)? {
+        None => Ok(None),
+        Some(Raw::Bool(false)) => Ok(None),
+        Some(Raw::Bool(true)) => Ok(Some(LegendSelectedMode::Multiple)),
+        Some(Raw::Mode(m)) => Ok(Some(m)),
+    }
+}
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(untagged)]
@@ -155,6 +175,7 @@ pub struct Legend {
     formatter: Option<String>,
     #[charming_skip_setter]
     selected: Option<BTreeMap<String, bool>>,
+    #[serde(default, deserialize_with = "deserialize_legend_selected_mode")]
     selected_mode: Option<LegendSelectedMode>,
     border_color: Option<Color>,
     inactive_color: Option<Color>,

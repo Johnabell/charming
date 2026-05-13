@@ -42,6 +42,7 @@ pub struct Line {
     encode: Option<DimensionEncode>,
     x_axis_index: Option<f64>,
     y_axis_index: Option<f64>,
+    polar_index: Option<f64>,
     tooltip: Option<Tooltip>,
     silent: Option<bool>,
     z: Option<i32>,
