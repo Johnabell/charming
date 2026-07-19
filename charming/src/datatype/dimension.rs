@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Serialize};
 
@@ -35,6 +37,14 @@ pub struct Dimension {
     type_: Option<DimensionType>,
     name: Option<String>,
     display_name: Option<String>,
+}
+
+impl FromStr for Dimension {
+    type Err = std::convert::Infallible;
+
+    fn from_str(name: &str) -> Result<Self, Self::Err> {
+        Ok(Self::new().name(name))
+    }
 }
 
 impl From<&str> for Dimension {

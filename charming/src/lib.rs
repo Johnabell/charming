@@ -301,6 +301,7 @@ pub struct Chart {
     mark_line: Option<MarkLine>,
     aria: Option<Aria>,
     series: Vec<Series>,
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
     graphic: Vec<Value>,
     #[serde(skip_serializing)]
     geo_map: Vec<GeoMap>,

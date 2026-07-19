@@ -7,6 +7,7 @@ use crate::{
 };
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Deserializer, Serialize};
+use serde_with::{DisplayFromStr, PickFirst, serde_as};
 
 /// TODO remove this since the json that requires this is actaully incorrect. But needs an upstream
 /// fix
@@ -29,6 +30,7 @@ where
     }
 }
 
+#[serde_as]
 #[serde_with::apply(
   Option => #[serde(skip_serializing_if = "Option::is_none")],
   Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -60,6 +62,7 @@ pub struct Custom {
     #[serde(default, deserialize_with = "deserialize_opt_clip")]
     clip: Option<bool>,
     #[charming_set_vec]
+    #[serde_as(as = "Vec<PickFirst<(_, DisplayFromStr)>>")]
     dimensions: Vec<Dimension>,
     encode: Option<DimensionEncode>,
     tooltip: Option<Tooltip>,

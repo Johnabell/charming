@@ -2,7 +2,9 @@ use super::{DataSource, Dimension};
 use crate::element::RawString;
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Deserializer, Serialize, de::Visitor, ser::SerializeSeq};
+use serde_with::{DisplayFromStr, PickFirst, serde_as};
 
+#[serde_as]
 #[derive(Serialize, Deserialize, Debug, PartialEq, PartialOrd, Clone)]
 pub struct Source {
     source: DataSource,
@@ -12,6 +14,7 @@ pub struct Source {
 
     #[serde(default)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde_as(as = "Vec<PickFirst<(_, DisplayFromStr)>>")]
     dimensions: Vec<Dimension>,
 }
 
